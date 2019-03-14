@@ -3,6 +3,8 @@ package com.ipiecole.java.java350.model;
 import com.ipiecoles.java.java350.model.Employe;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.time.LocalDate;
 
@@ -64,4 +66,25 @@ public class EmployeTest {
         // nbAnnee = 0 // Je vérifie que cette date soit égale à la valeur attendue
         Assertions.assertThat(nbAnnee).isEqualTo(0);
     }
+
+    @ParameterizedTest
+    @CsvSource({
+         "1, 'M12345', 0, 1.0, 1700.0"
+    })
+    public void getPrimeActuelle(Integer performance, String matricule, Long nbYearsAnciennete, Double tempsPartiel,
+                                 Double primeAnnuelle){
+        //Given
+        Employe employe = new Employe();
+        employe.setPerformance(performance);
+        employe.setMatricule(matricule);
+        employe.setTempsPartiel(tempsPartiel);
+        employe.setDateEmbauche(LocalDate.now().minusYears(nbYearsAnciennete));
+
+        //When
+        Double prime = employe.getPrimeAnnuelle();
+
+        //Then
+        Assertions.assertThat(prime).isEqualTo(primeAnnuelle);
+    }
+
 }
