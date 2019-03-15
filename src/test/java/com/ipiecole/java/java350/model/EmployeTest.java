@@ -69,7 +69,9 @@ public class EmployeTest {
 
     @ParameterizedTest
     @CsvSource({
-         "1, 'M12345', 0, 1.0, 1700.0"
+         "1, 'M12345', 0, 1.0, 1700.0",
+            "1, 'T12345', 2, 1.0, 1200.0 ",
+            "2, 'T12345', 0, 1.0, 2300.0 "
     })
     public void getPrimeActuelle(Integer performance, String matricule, Long nbYearsAnciennete, Double tempsPartiel,
                                  Double primeAnnuelle){
