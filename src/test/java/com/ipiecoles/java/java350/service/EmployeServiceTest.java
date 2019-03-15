@@ -107,7 +107,7 @@ class EmployeServiceTest {
     public void testEmbaucheSalarieLastMatricule99999(){
 
         //Given
-        String nom = "Sérien";
+        String nom = "Bark";
         String prenom = "Jean";
         Poste poste = Poste.MANAGER;
         NiveauEtude niveauEtude = NiveauEtude.MASTER;
@@ -129,7 +129,7 @@ class EmployeServiceTest {
     public void testEmbaucheSalarieEmployeExist() throws EmployeException {
 
         //Given
-        String nom = "Sérien";
+        String nom = "Naiplu";
         String prenom = "Jean";
         Poste poste = Poste.MANAGER;
         NiveauEtude niveauEtude = NiveauEtude.MASTER;
