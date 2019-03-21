@@ -1,5 +1,6 @@
 package com.ipiecoles.java.java350.model;
 
+import com.ipiecoles.java.java350.repository.EmployeRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -83,6 +84,70 @@ public class EmployeTest {
         //Then
         Assertions.assertEquals(primeAnnuelle, prime);
 
+    }
+
+//test réalisés pour couvrir la methode augmenterSalaire
+// Les conditions utilisées sont un pourcentage egal à 0, un négatif, un élevé et un classique.
+@Test
+    public void testPourcentageEgal0(){
+    //Given
+    Employe e = new Employe();
+    e.setSalaire(2000.0);
+    e.augmenterSalaire(0.0);
+
+    //When
+    e.getSalaire();
+
+    //Then
+
+    Assertions.assertEquals(2000.0, e.getSalaire().doubleValue());
+    }
+
+    @Test
+
+    public void testPourcentageSuperieurA100(){
+        //Given
+        Employe e = new Employe();
+        e.setSalaire(2000.0);
+        e.augmenterSalaire(1.0);
+
+        //When
+        e.getSalaire();
+
+        //Then
+
+        Assertions.assertEquals(4000.0, e.getSalaire().doubleValue());
+    }
+
+
+@Test
+    public void testPourcentageNegatif(){
+    //Given
+    Employe e = new Employe();
+    e.setSalaire(2000.0);
+    e.augmenterSalaire(-1.5);
+
+    //When
+    e.getSalaire();
+
+    //Then
+
+    Assertions.assertEquals(0, e.getSalaire().doubleValue());
+    }
+
+@Test
+    public void testPourcentageOk(){
+    //Given
+    Employe e = new Employe();
+    e.setSalaire(2000.0);
+    e.augmenterSalaire(0.5);
+
+    //When
+    e.getSalaire();
+
+    //Then
+
+    Assertions.assertEquals(3000.0, e.getSalaire().doubleValue());
     }
 
 }

@@ -121,7 +121,14 @@ public class Employe {
     }
 
     //Augmenter salaire
-    public void augmenterSalaire(double pourcentage){}
+    //Si je n'avais pas fait les test avant je n'aurait pas pris correctement en compte le cas d'un pourcenrage négatif
+    public void augmenterSalaire(double pourcentage){
+       Double salaireAugmente = this.getSalaire() * (1 + pourcentage);
+       if (salaireAugmente < 0.0) {
+           salaireAugmente = 0.0;
+       }
+        this.setSalaire(salaireAugmente);
+    }
 
     public Long getId() {
         return id;
