@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class EmployeTest {
 
@@ -149,5 +150,26 @@ public class EmployeTest {
 
     Assertions.assertEquals(3000.0, e.getSalaire().doubleValue());
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "1, 2019-01-01, 8",
+            "1, 2021-01-01, 11",
+            "0.5, 2022-01-01, 5",
+            "0.5, 2032-01-01, 6"
+    })
+    public void getNbRtt (Double tempsPartiel, LocalDate date, Integer nbRtt){
+        //Given
+        Employe employe = new Employe();
+        employe.setTempsPartiel(tempsPartiel);
+
+        //When
+        Integer resultatRtt = employe.getNbRtt(date);
+
+        //Then
+        Assertions.assertEquals(nbRtt, resultatRtt);
+
+    }
+
 
 }

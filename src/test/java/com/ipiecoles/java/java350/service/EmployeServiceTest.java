@@ -2,6 +2,7 @@ package com.ipiecoles.java.java350.service;
 
 import com.ipiecoles.java.java350.exception.EmployeException;
 import com.ipiecoles.java.java350.model.Employe;
+import com.ipiecoles.java.java350.model.Entreprise;
 import com.ipiecoles.java.java350.model.NiveauEtude;
 import com.ipiecoles.java.java350.model.Poste;
 import com.ipiecoles.java.java350.repository.EmployeRepository;
@@ -18,9 +19,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import javax.persistence.EntityExistsException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -141,4 +139,95 @@ public class EmployeServiceTest {
         EmployeException e = Assertions.assertThrows(EmployeException.class, () -> employeService.embaucheEmploye(nom, prenom, poste, niveauEtude, tempsPartiel));
         Assertions.assertEquals("Limite des 100000 matricules atteinte !", e.getMessage());
     }
+
+
+    @Test
+    public void calculPerformanceCommercial20PourcentsMoins() throws EmployeException {
+        //Given
+        String nom = "Doe";
+        String prenom = "John";
+        when(employeRepository.findByMatricule("C22222")).thenReturn(new Employe(nom, prenom, "C22222", LocalDate.now(), 2000.0, 2, 1.0));
+        when(employeRepository.avgPerformanceWhereMatriculeStartsWith("C")).thenReturn(1.0);
+
+        //When
+        employeService.calculPerformanceCommercial("C22222", 5000L, 10000L);
+
+        //Then
+        ArgumentCaptor<Employe> employeArgumentCaptor = ArgumentCaptor.forClass(Employe.class);
+        verify(employeRepository, times(1)).save(employeArgumentCaptor.capture());
+        Assertions.assertEquals(Entreprise.PERFORMANCE_BASE, employeArgumentCaptor.getValue().getPerformance());
+
+    }
+    @Test
+    public void calculPerformanceCommercialEntre5Et20PourcentsMoins() throws EmployeException {
+        //Given
+        String nom = "Doe";
+        String prenom = "John";
+        when(employeRepository.findByMatricule("C22222")).thenReturn(new Employe(nom, prenom, "C22222", LocalDate.now(), 2000.0, 2, 1.0));
+        when(employeRepository.avgPerformanceWhereMatriculeStartsWith("C")).thenReturn(1.0);
+
+        //When
+        employeService.calculPerformanceCommercial("C22222", 9000L, 10000L);
+
+        //Then
+        ArgumentCaptor<Employe> employeArgumentCaptor = ArgumentCaptor.forClass(Employe.class);
+        verify(employeRepository, times(1)).save(employeArgumentCaptor.capture());
+        Assertions.assertEquals(Entreprise.PERFORMANCE_BASE, employeArgumentCaptor.getValue().getPerformance());
+
+
+    }
+    @Test
+    public void calculPerformanceCommercialEntrePlus5EtMoins5Pourcents() throws EmployeException {
+        //Given
+        String nom = "Doe";
+        String prenom = "John";
+        when(employeRepository.findByMatricule("C22222")).thenReturn(new Employe(nom, prenom, "C22222", LocalDate.now(), 2000.0, 2, 1.0));
+        when(employeRepository.avgPerformanceWhereMatriculeStartsWith("C")).thenReturn(4.0);
+
+        //When
+        employeService.calculPerformanceCommercial("C22222", 10000L, 10000L);
+
+        //Then
+        ArgumentCaptor<Employe> employeArgumentCaptor = ArgumentCaptor.forClass(Employe.class);
+        verify(employeRepository, times(1)).save(employeArgumentCaptor.capture());
+        Assertions.assertEquals(2, employeArgumentCaptor.getValue().getPerformance().intValue());
+
+
+    }
+    @Test
+    public void calculPerformanceCommercialEntre5Et20PourcentsPlus() throws EmployeException {
+        //Given
+        String nom = "Doe";
+        String prenom = "John";
+        when(employeRepository.findByMatricule("C22222")).thenReturn(new Employe(nom, prenom, "C22222", LocalDate.now(), 2000.0, 2, 1.0));
+        when(employeRepository.avgPerformanceWhereMatriculeStartsWith("C")).thenReturn(1.0);
+
+        //When
+        employeService.calculPerformanceCommercial("C22222", 6000L, 5000L);
+
+        //Then
+        ArgumentCaptor<Employe> employeArgumentCaptor = ArgumentCaptor.forClass(Employe.class);
+        verify(employeRepository, times(1)).save(employeArgumentCaptor.capture());
+        Assertions.assertEquals(4, employeArgumentCaptor.getValue().getPerformance().intValue());
+
+
+    }
+    @Test
+    public void calculPerformanceCommercial20PourcentsPlus() throws EmployeException {
+        //Given
+        String nom = "Doe";
+        String prenom = "John";
+        when(employeRepository.findByMatricule("C22222")).thenReturn(new Employe(nom, prenom, "C22222", LocalDate.now(), 2000.0, 2, 1.0));
+        when(employeRepository.avgPerformanceWhereMatriculeStartsWith("C")).thenReturn(4.0);
+
+        //When
+        employeService.calculPerformanceCommercial("C22222", 10500L, 1000L);
+
+        //Then
+        ArgumentCaptor<Employe> employeArgumentCaptor = ArgumentCaptor.forClass(Employe.class);
+        verify(employeRepository, times(1)).save(employeArgumentCaptor.capture());
+        Assertions.assertEquals(7, employeArgumentCaptor.getValue().getPerformance().intValue());
+
+    }
+
 }
