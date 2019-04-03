@@ -59,4 +59,19 @@ public class EmployeServiceIntegrationTest {
         Assertions.assertEquals(1825.46, employe.getSalaire().doubleValue());
     }
 
+    @Test
+    public void testIntegreCalculPerformancePlus20Pourcents() throws EmployeException {
+        //Given
+        employeRepository.save(new Employe("Doe", "John", "C22222", LocalDate.now(), Entreprise.SALAIRE_BASE, 2, 1.0));
+
+        //When
+        employeService.calculPerformanceCommercial("C22222", 10500L, 1000L);
+
+        //Then
+        Employe employe = employeRepository.findByMatricule("C22222");
+        Integer performanceCalculee = employe.getPerformance();
+        Assertions.assertEquals(7, performanceCalculee.intValue());
+
+    }
+
 }
